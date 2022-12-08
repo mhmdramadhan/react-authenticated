@@ -63,8 +63,12 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        AuthCtx.login(data.idToken);
-        history.replace('/')
+        // tambah + untuk convert string to number | * 1000 untuk merubah dari second ke millisecond
+        const expirationTime = new Date(
+          new Date().getTime() + +data.expiresIn * 1000
+        );
+        AuthCtx.login(data.idToken, expirationTime.toISOString());
+        history.replace("/");
         // console.log(data)
       })
       .catch((err) => {
